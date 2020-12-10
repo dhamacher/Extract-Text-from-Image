@@ -14,11 +14,12 @@ pytesseract.pytesseract.tesseract_cmd = tess_env
 custom_config = r"--oem 3 --psm 11 -c tessedit_char_whitelist= 'ABCDEFGHIJKLMNOPQRSTUVWXYZ '"
 
 
-def preprocess_final(im):
-    im = cv2.bilateralFilter(im,5, 55,60)
-    im = cv2.cvtColor(im, cv2.COLOR_BGR2GRAY)
-    _, im = cv2.threshold(im, 240, 255, 1)
-    return im
+def preprocess_final(image):
+    """ Returns the preprocessed image."""
+    image = cv2.bilateralFilter(image, 5, 55, 60)
+    image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    _, image = cv2.threshold(image, 240, 255, 1)
+    return image
 
 
 if __name__ == '__main__':
@@ -46,13 +47,13 @@ if __name__ == '__main__':
 #
 # # Image cleaning
 # #
-# # The first function that we applied to our image is bilateral filtering. If you want to understand deeply how it works,
-# #  there is a nice tutorial on OpenCV site, and you can find the description of the parameters here.
+# # The first function that we applied to our image is bilateral filtering. If you want to understand deeply how it
+# # works, there is a nice tutorial on OpenCV site, and you can find the description of the parameters here.
 # #
-# # In a nutshell, this filter helps to remove the noise, but, in contrast with other filters, preserves edges instead of
-# # blurring them. This operation is performed by excluding from the blurring of a point the neighbors that do not present
-# # similar intensities. With the chosen parameters, the difference from the other image is not strongly perceptible,
-# # however, it led to a better final performance.
+# # In a nutshell, this filter helps to remove the noise, but, in contrast with other filters, preserves edges instead
+# # of blurring them. This operation is performed by excluding from the blurring of a point the neighbors that do
+# # not present similar intensities. With the chosen parameters, the difference from the other image is not
+# # strongly perceptible, however, it led to a better final performance.
 # im= cv2.bilateralFilter(im,5, 55,60)
 # plt.figure(figsize=(10,10))
 # plt.title('BILATERAL FILTER')
@@ -68,12 +69,12 @@ if __name__ == '__main__':
 # plt.savefig('..\\images\\03_grayscale_img.png', bbox_inches='tight')
 #
 #
-# # The last transformation is binarization. For every pixel, the same threshold value is applied. If the pixel value is
-# # smaller than the threshold, it is set to 0, otherwise, it is set to 255. Since we have white text, we want to blackout
-# # everything is not almost perfectly white (not exactly perfect since usually text is not “255-white”. We found that
-# # 240 was a threshold that could do the work. Since tesseract is trained to recognize black text, we also need to
-# # invert the colors. The function threshold from OpenCV can do the two operations jointly, by selecting the inverted
-# # binarization.
+# # The last transformation is binarization. For every pixel, the same threshold value is applied. If the pixel value
+# # is smaller than the threshold, it is set to 0, otherwise, it is set to 255. Since we have white text, we want
+# # to blackout everything is not almost perfectly white (not exactly perfect since usually text is not “255-white”.
+# # We found that 240 was a threshold that could do the work. Since tesseract is trained to recognize black text,
+# # we also need to invert the colors. The function threshold from OpenCV can do the two operations jointly,
+# # by selecting the inverted binarization.
 # _, im = cv2.threshold(im, 240, 255, 1)
 # plt.figure(figsize=(10,10))
 # plt.title('IMMAGINE BINARIA')
